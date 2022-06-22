@@ -2,7 +2,8 @@
 # 어디서 indexError가 뜨는건지 확인할 필요가 있다.
 
 import sys
-
+# (100+1+|01)+
+# 10011001
 def pattern(text):
     # print(text)
     if len(text) == 0:
