@@ -1,13 +1,75 @@
 # BOJ16637 괄호 추가하기
+import copy
+from collections import deque
 
-def cal(poly):
-    pass
+def part_num(signs, temp):
+    a = copy.deepcopy(temp) # 얕은 복사를 하게 되면 서로 같은 주소를 바라보기 때문에 temp값이 바뀌게 된다. 따라서 깊은 복사 사용
+    signs_combi.append(a)
+
+    if len(signs) - temp[-1] > 2:
+        for i in range(len(signs)-temp[-1] - 2):
+            temp.append(temp[-1] + 2 + i)
+            part_num(signs, temp)
+            temp.pop()
+
+def cal(x, y, sign):
+    if sign == "+":
+        return x + y
+    elif sign == "-":
+        return x - y
+    elif sign == "*":
+        return x * y
 
 
 N = int(input())
 poly = input()
+numbers = []
+signs = []
+for i in range(len(poly)):
+    if i%2 == 0:
+        numbers.append(int(poly[i]))
+    else:
+        signs.append(poly[i])
 
-# 어케해야 하냐 감이 안잡히네
+# max_combi_size = len(signs) // 2 + len(signs) % 2
+signs_combi = [[]]
+
+for i in range(len(signs)):
+    temp = [i]
+    part_num(signs, temp)
+
+max_num = -(2**31)
+for combi in signs_combi:
+    # combi 내의 인덱스 각각에 대해서 (idx)
+    # numbers[idx] signs[idx] numbers[idx+1] 을 계산한 값을 numbers list에 다시 넣고 (어떻게 넣을지 생각)
+    new_num = deque()
+    new_sign = []
+    for i in range(len(signs)):
+        if i in combi:
+            new_num.append(cal(numbers[i], numbers[i+1], signs[i]))
+        else:
+            new_sign.append(signs[i])
+            if (i-1) not in combi:
+                new_num.append(numbers[i])
+
+    if len(combi) > 0:
+        if combi[-1] != len(signs):
+            new_num.append(numbers[len(signs)])
+    else:
+        new_num.append(numbers[len(signs)])
+
+    for i in range(len(new_sign)):
+        a = new_num.popleft()
+        b = new_num.popleft()
+        c = cal(a, b, new_sign[i])
+        new_num.appendleft(c)
+
+    if new_num[0] > max_num:
+        max_num = new_num[0]
+
+print(max_num)
+
+
 
 # 괄호 조합을 다 찾는다.
 # 계산을 한다.
