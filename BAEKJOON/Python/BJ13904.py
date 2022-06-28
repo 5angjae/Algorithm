@@ -4,9 +4,9 @@
 N = int(input())
 
 homeworks = []
-for _ in range(N):
+for i in range(N):
     d, w = map(int, input().split())
-    homeworks.append([d, w])
+    homeworks.append([d, w, i])
 
 homeworks.sort(reverse=True)
 max_day = homeworks[0][0]
@@ -19,10 +19,11 @@ for i in range(max_day, 0, -1):
         if homework[0] >= i and homework[1] > max_daily_point and homework not in end_homework:
             max_daily_point = homework[1]
             max_homework = homework
-            #print("for", i, homework, max_daily_point)
+            # print("for", i, homework, max_daily_point)
 
-    #print("out", i, homework, max_daily_point)
+
     end_homework.append(max_homework)
+    # print("out", i, end_homework, max_daily_point)
     point += max_daily_point
 
 print(point)
