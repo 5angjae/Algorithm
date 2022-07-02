@@ -2,9 +2,7 @@
 
 def tape(x):
     for i in range(x, x+L):
-        #print(i)
         cover.append(i)
-    #print("-----------------")
 
 N, L = map(int, input().split())
 arr = list(map(int, input().split()))
